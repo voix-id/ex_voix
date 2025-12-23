@@ -14,6 +14,17 @@ defmodule TodoApp.Application do
        repos: Application.fetch_env!(:todo_app, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:todo_app, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: TodoApp.PubSub},
+
+      TodoAppMCP.Endpoint,
+      Anubis.Server.Registry,
+      {TodoAppMCP.Server, transport: :streamable_http},
+      {TodoAppMCP.Clients.TodoAppMCP,
+          transport:
+            {:streamable_http,
+             base_url:
+               Application.get_env(:todo_app, TodoAppMCP.Clients.TodoAppMCP)[:base_url]}},
+      {TodoAppMCP.Runners.KeepAlive, [mcp: TodoAppMCP.Clients.TodoAppMCP, interval: 15_000]},
+
       # Start a worker by calling: TodoApp.Worker.start_link(arg)
       # {TodoApp.Worker, arg},
       # Start to serve requests, typically the last entry

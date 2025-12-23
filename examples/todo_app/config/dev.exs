@@ -26,6 +26,19 @@ config :todo_app, TodoAppWeb.Endpoint,
     tailwind: {Tailwind, :install_and_run, [:todo_app, ~w(--watch)]}
   ]
 
+config :todo_app, TodoAppMCP.Endpoint,
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4002")],
+  check_origin: false,
+  code_reloader: false,
+  debug_errors: true,
+  # watchers: [
+  #   esbuild: {Esbuild, :install_and_run, [:ai_commerce, ~w(--sourcemap=inline --watch)]},
+  #   tailwind: {Tailwind, :install_and_run, [:ai_commerce, ~w(--watch)]}
+  # ],
+  secret_key_base: "hfgBR1sJDa/XJb6AQazzk2MVbveuQn2LUFZmDUagH67sNfLFMGq+czxQCnLr9Weu"
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
