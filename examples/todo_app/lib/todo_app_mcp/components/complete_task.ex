@@ -1,6 +1,6 @@
-defmodule TodoAppMCP.Components.UpdateTask do
+defmodule TodoAppMCP.Components.CompleteTask do
   @moduledoc """
-  Update a task from the list
+  Mark task as complete
   """
 
   use Anubis.Server.Component,
@@ -14,8 +14,13 @@ defmodule TodoAppMCP.Components.UpdateTask do
   end
 
   @impl true
+  def title() do
+    "complete_task_<%= task_id %>"
+  end
+
+  @impl true
   def description() do
-    "Update task from the list"
+    "Mark task '<%= task_name %>' as complete"
   end
 
   @impl true

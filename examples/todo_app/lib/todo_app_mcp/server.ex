@@ -5,7 +5,7 @@ defmodule TodoAppMCP.Server do
     capabilities: [:tools]
 
   component(TodoAppMCP.Components.AddTask)
-  component(TodoAppMCP.Components.UpdateTask)
+  component(TodoAppMCP.Components.CompleteTask)
 
   # def init(_client_info, frame) do
   #   # TODO:
