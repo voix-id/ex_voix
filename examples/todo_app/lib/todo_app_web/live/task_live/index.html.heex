@@ -12,17 +12,26 @@
 
 <form
     id="form"
-    class="prose prose-md flex flex-col items-center justify-center mx-auto max-w-full bg-gray-100 text-gray-800 p-2"    
+    class="prose prose-md flex flex-col items-center justify-center mx-auto max-w-full bg-gray-100 text-gray-800 p-2"
 >
 <ul id="tasks" phx-update="stream" class="list bg-base-100 rounded-box shadow-md">
     <%= for {dom_id, %{id: id, task: task}} <- @streams.tasks do %>
         <li id={dom_id} class="list-row min-w-[100vh]">
             <div>
-                <!--img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/-->
+                <.input field={@form[:"completed_#{id}"]} type="checkbox" phx-change="update_task" value={task.completed} label="" />
             </div>
             <div>
-            <div>{task.text}</div>
-            <div class="text-xs uppercase font-semibold opacity-60">{task.priority}</div>
+                <div class={complete_task_text(task.completed)}>{task.text}</div>
+                <div class={priority_badge(task.priority, task.completed)}>
+                    {task.priority}
+                </div>
+                <div class={due_date_text(task.completed)}>
+                    {due_date_in_days(task.due_date)}
+                </div>
+                <div class="tooltip hover:tooltip-open tooltip-right tooltip-secondary" data-tip={task.notes}>
+                    📝 Notes
+                </div>
+                
             </div>
             <div class="flex">
                 <.link class="inline-flex" patch={~p"/tasks/#{task}/edit"}>

@@ -65,6 +65,20 @@ defmodule TodoAppWeb.TaskLive.Index do
   end
 
   @impl true
+  def handle_event("update_task", %{"task" => task}, socket) do
+    #IO.inspect(task, label: "update_task")
+    updated_tasks =
+      Enum.map(task, fn {"completed_" <> id, value} ->
+        task = Todos.get_task!(id)
+        {:ok, tsk} = Todos.update_task(task, %{"completed" => value})
+        %{id: tsk.id, task: tsk}
+      end)
+    task = Enum.at(updated_tasks, 0)
+
+    {:noreply, stream_insert(socket, :tasks, task)}
+  end
+
+  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     task = Todos.get_task!(id)
     {:ok, _} = Todos.delete_task(task)
@@ -77,4 +91,43 @@ defmodule TodoAppWeb.TaskLive.Index do
     Todos.change_task(%Task{}, params)
   end
   defp task_changeset_from(_), do: nil
+
+  defp priority_badge(priority, completed) do
+    case priority do
+      :high ->
+        if completed,
+          do: "text-xs uppercase font-semibold opacity-30 badge badge-error",
+          else: "text-xs uppercase font-semibold opacity-60 badge badge-error"
+      :medium ->
+        if completed,
+          do: "text-xs uppercase font-semibold opacity-30 badge badge-warning",
+          else: "text-xs uppercase font-semibold opacity-60 badge badge-warning"
+      :low ->
+        if completed,
+          do: "text-xs uppercase font-semibold opacity-30 badge badge-info",
+          else: "text-xs uppercase font-semibold opacity-60 badge badge-info"
+    end
+  end
+
+  defp complete_task_text(completed) do
+    if completed, do: "line-through", else: ""
+  end
+
+  defp due_date_in_days(due_date) do
+    today = DateTime.utc_now()
+    date_today = DateTime.to_date(today)
+
+    diff = Date.diff(date_today, due_date)
+    cond do
+      diff < 0 -> "Due: #{diff*(-1)} more days"
+      diff > 0 -> "Due: #{diff} days ago"
+      diff == 0 -> "Due: today"
+    end
+  end
+
+  defp due_date_text(completed) do
+    if completed,
+      do: "text-xs uppercase font-semibold opacity-30 badge badge-outline badge-secondary",
+      else: "text-xs uppercase font-semibold opacity-60 badge badge-outline badge-secondary"
+  end
 end
