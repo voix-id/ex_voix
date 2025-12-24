@@ -6,7 +6,7 @@ defmodule TodoApp.Repo.Migrations.CreateTasks do
       add(:text, :string)
       add(:priority, :string)
       add(:completed, :boolean)
-      add(:due_date, :utc_datetime)
+      add(:due_date, :date)
       add(:notes, :text)
 
       timestamps(type: :utc_datetime)

@@ -20,15 +20,13 @@ defmodule TodoAppWeb.TaskLive.FormComponent do
         phx-submit="save"
       >
 
-        <.input field={@form[:text]} type="text" label="Text" />
-        <.input field={@form[:priority]} type="select" label="Priority" />
-        <.input field={@form[:completed]} type="checkbox" label="Is Completed?" />
+        <.input field={@form[:text]} type="text" label="Task" />
         <.input field={@form[:due_date]} type="date" label="Due Date" />
+        <.input field={@form[:priority]} type="select" label="Priority" options={["Low": "low", "Medium": "medium", "High": "high"]} />
         <.input field={@form[:notes]} type="textarea" label="Notes" />
 
         <actions>
         <.button phx-disable-with="Saving...">Save</.button>
-        <.link class="btn btn-soft" phx-target={@myself} phx-click="cancel">Cancel</.link>
         </actions>
 
       </.simple_form>
@@ -58,15 +56,6 @@ defmodule TodoAppWeb.TaskLive.FormComponent do
   @impl true
   def handle_event("save", %{"task" => task_params}, socket) do
     save_task(socket, socket.assigns.action, task_params)
-  end
-
-  @impl true
-  def handle_event("cancel", _params, socket) do
-    IO.inspect("cancel", label: "event")
-    # socket = socket
-    #   |> push_event("js-next-event", %{})
-
-    {:noreply, socket}
   end
 
   defp save_task(socket, :edit, task_params) do

@@ -6,7 +6,7 @@ defmodule TodoApp.Todos.Task do
     field :text, :string
     field :priority, Ecto.Enum, values: [:low, :medium, :high]
     field :completed, :boolean
-    field :due_date, :utc_datetime
+    field :due_date, :date
     field :notes, :string
 
     timestamps(type: :utc_datetime)

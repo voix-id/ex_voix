@@ -24,11 +24,21 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/todo_app"
 import topbar from "../vendor/topbar"
+// import Alpine from "../vendor/alpinejs.min"
+// window.Alpine = Alpine;
+// Alpine.start();
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
+  // dom: {
+  //   onBeforeElUpdated(from, to) {
+  //     if (from._x_dataStack) {
+  //       window.Alpine.clone(from, to);
+  //     }
+  //   },
+  // },  
   hooks: {...colocatedHooks},
 })
 
