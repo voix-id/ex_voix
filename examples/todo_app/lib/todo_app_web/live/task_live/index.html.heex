@@ -1,1 +1,75 @@
-<div></div>
+<.table
+  id="tasks"
+  rows={@streams.tasks}
+>
+  <:col :let={{_, %{id: id, task: _}}} label="">{id}</:col>
+  <:col :let={{_, %{id: _, task: task}}} label="Name">{task.text}</:col>
+  <:col :let={{_, %{id: _, task: task}}} label="Is Completed?">{task.completed}</:col>
+  <:col :let={{_, %{id: _, task: task}}} label="Notes">{task.notes}</:col>
+
+  <:action :let={{_, %{id: id, task: task}}}>
+    <div class="flex">
+      <.link class="inline-flex" patch={~p"/tasks/#{task}/edit"}>
+        <svg
+          class="w-6 h-6 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+          />
+        </svg>
+      </.link>
+      <.link
+        phx-click={JS.push("delete", value: %{id: task.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        <svg
+          class="w-6 h-6 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </.link>
+
+    </div>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="task-modal"
+  show
+  on_cancel={JS.patch(~p"/tasks")}
+>
+  <.live_component
+    :if={@live_action in [:new, :edit]}
+    module={TodoAppWeb.TaskLive.FormComponent}
+    id={@task.id || :new}
+    title={@page_title}
+    action={@live_action}
+    task={@task}
+    uri={@uri}
+    form={@form}
+    patch={~p"/tasks"}
+  />
+</.modal>
