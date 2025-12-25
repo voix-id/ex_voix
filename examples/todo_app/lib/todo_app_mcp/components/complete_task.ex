@@ -10,17 +10,17 @@ defmodule TodoAppMCP.Components.CompleteTask do
 
   schema do
     field :id, :integer, required: true
-    field :completed, :boolean
+    field :completed, :boolean, description: "Is the task completed?"
   end
 
   @impl true
   def title() do
-    "complete_task_<%= task_id %>"
+    "complete_task_<%= item_id %>"
   end
 
   @impl true
   def description() do
-    "Mark task '<%= task_name %>' as complete"
+    "Mark task '<%= item_label %>' as complete"
   end
 
   @impl true

@@ -26,14 +26,33 @@ defmodule ExVoix.ModelContext.Registry do
     mcp_names
   end
 
-  def load_tools() do
+  def load_tool(mcp, name) do
+    result =
+      case mcp.list_tools() do
+        {:ok, result} ->
+          # IO.inspect(result, label: ":ok result")
+          result
+
+        {:error, err} ->
+          IO.inspect(err, label: ":error reason")
+          {:ok, result} = mcp.list_tools()
+          result
+      end
+    # IO.inspect(Map.get(result, :result) |> Map.get("tools"), label: "get_list_tools result")
+    tools = Map.get(result, :result) |> Map.get("tools")
+    # IO.inspect(tools)
+    cond do
+      is_map(tools) ->
+        Enum.filter(tools |> Map.keys(), fn t -> t == name end)
+
+      true ->
+        Enum.filter(tools, fn t -> not is_nil(Map.get(t, "name")) and Map.get(t, "name") == name end)
+
+    end
   end
 
-  def load_resources() do
-
+  def load_resources(_mcp, _name) do
+    # TODO: once the voix standard already firmed for resources, implement this
   end
 
-  def put_contexts(_contexts \\ %{}) do
-
-  end
 end

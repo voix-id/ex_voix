@@ -21,6 +21,7 @@ defmodule TodoAppWeb.TaskLive.Index do
       :ok,
       socket
       |> assign(:add_task_text, nil)
+      |> assign(:todo_mcp, TodoAppMCP.Clients.TodoAppMCP)
       |> stream(:tasks, tasks)
     }
   end
@@ -76,7 +77,7 @@ defmodule TodoAppWeb.TaskLive.Index do
       today_date = DateTime.to_date(today)
       due_date = Date.shift(today_date, week: 1)
 
-      {:ok, task} = Todos.create_task(%{"completed" => false, "text" => text, "priority" => "low", "due_date" => due_date, "notes" => ""})
+      {:ok, task} = Todos.create_task(%{"completed" => false, "text" => text, "priority" => "medium", "due_date" => due_date, "notes" => ""})
       tsk = %{id: task.id, task: task}
       {:noreply, socket |> assign(:add_task_text, nil) |> stream_insert(:tasks, tsk)}
     else

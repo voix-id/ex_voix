@@ -6,6 +6,7 @@ defmodule TodoAppMCP.Server do
 
   component(TodoAppMCP.Components.AddTask)
   component(TodoAppMCP.Components.CompleteTask)
+  component(TodoAppMCP.Components.RemoveTask)
 
   # def init(_client_info, frame) do
   #   # TODO:

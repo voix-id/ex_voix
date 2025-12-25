@@ -51,6 +51,7 @@ defmodule TodoAppWeb do
   def live_view do
     quote do
       use Phoenix.LiveView
+      import ExVoix.Html.Components
 
       unquote(html_helpers())
     end
@@ -59,6 +60,7 @@ defmodule TodoAppWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+      import ExVoix.Html.Components
 
       unquote(html_helpers())
     end

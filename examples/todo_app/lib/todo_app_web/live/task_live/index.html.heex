@@ -19,6 +19,7 @@
     <div id="add_task_id" class="flex items-center gap-4">
         <.input id="text_id" field={@form[:text]} type="text" value={@add_task_text} label="" placeholder="What need to be done?" class="input input-bordered h-10 mt-2 min-w-[50vh]"/>
         <.button class="btn btn-soft h-10" type="submit">Add Task</.button>
+        <.tool mcp={@todo_mcp} name="add_task" />
     </div>
     <ul id="tasks" phx-update="stream" class="list bg-base-100 rounded-box shadow-md">
         <%= for {dom_id, %{id: id, task: task}} <- @streams.tasks do %>
@@ -37,7 +38,6 @@
                     <div class={notes_tooltip(task.notes)} data-tip={task.notes}>
                         📝 Notes
                     </div>
-                    
                 </div>
                 <div class="flex">
                     <.link class="inline-flex" patch={~p"/tasks/#{task}/edit"}>
@@ -81,8 +81,8 @@
                         />
                         </svg>
                     </.link>
-
                 </div>
+
             </li>
         <% end %>
     </ul>
