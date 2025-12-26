@@ -113,9 +113,39 @@ defmodule TodoAppWeb.TaskLive.Index do
   def handle_event("call", params, socket) do
     IO.inspect(params, label: "params in call event")
 
-    Tool.call(params)
+    case Tool.call(params) do
+      nil ->
+        {:noreply, socket}
+      {:ok, res} ->
+        IO.inspect(res, label: "call result")
+        if not Map.get(res, "isError") do
+          case Map.get(res, "tool") do
+            "add_task" ->
+              {:noreply, stream_insert(socket, :tasks, maybe_extract_item(res))}
 
-    {:noreply, socket}
+            "complete_task" ->
+              {:noreply, stream_insert(socket, :tasks, maybe_extract_item(res))}
+
+            "remove_task" ->
+              {:noreply, stream_delete(socket, :tasks, maybe_extract_item(res))}
+
+          end
+        else
+          {:noreply, socket}
+        end
+
+    end
+  end
+
+  defp maybe_extract_item(res) do
+    item = Map.get(res, "item") |> :json.decode()
+    task =
+      try do
+        Todos.get_task!(Map.get(item, "id"))
+      rescue
+        _ -> item
+      end
+    %{id: (if is_nil(Map.get(task, "id")), do: task.id, else: Map.get(task, "id")), task: task}
   end
 
   defp task_changeset_from(params = %{}) do

@@ -32,6 +32,9 @@ defmodule TodoAppMCP.Components.CompleteTask do
 
     task = Todos.get_task!(id)
     {:ok, tsk} = Todos.update_task(task, %{"completed" => value})
-    {:reply, Response.tool() |> Response.json(tsk), frame}
+    {:reply, Response.tool() |> Response.json(%{
+      tool: "complete_task",
+      item: tsk |> Jason.encode!()
+    }), frame}
   end
 end

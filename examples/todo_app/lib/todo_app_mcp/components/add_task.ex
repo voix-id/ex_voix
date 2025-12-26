@@ -40,6 +40,9 @@ defmodule TodoAppMCP.Components.AddTask do
       "notes" => ""
     })
 
-    {:reply, Response.tool() |> Response.json(task), frame}
+    {:reply, Response.tool() |> Response.json(%{
+      tool: "add_task",
+      item: task |> Jason.encode!()
+    }), frame}
   end
 end

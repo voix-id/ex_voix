@@ -30,6 +30,9 @@ defmodule TodoAppMCP.Components.RemoveTask do
 
     task = Todos.get_task!(id)
     {:ok, tsk} = Todos.delete_task(task)
-    {:reply, Response.tool() |> Response.json(tsk), frame}
+    {:reply, Response.tool() |> Response.json(%{
+      tool: "remove_task",
+      item: tsk |> Jason.encode!()
+    }), frame}
   end
 end
