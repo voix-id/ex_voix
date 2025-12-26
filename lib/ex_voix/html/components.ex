@@ -51,7 +51,7 @@ defmodule ExVoix.Html.Components do
       end
 
     ~H"""
-      <tool name={@tool_name} description={@tool_desc}>
+      <tool name={@tool_name} description={@tool_desc} class="hidden">
         <%= for prop <- @props do %>
           {raw(prop)}
         <% end %>
@@ -72,7 +72,7 @@ defmodule ExVoix.Html.Components do
   def context(assigns) do
 
     ~H"""
-      <context name={@name}>
+      <context id={"context_" <> @name} name={@name} class="hidden">
         {raw(@content)}
       </context>
     """

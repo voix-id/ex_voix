@@ -21,6 +21,12 @@ defmodule TodoApp.Todos do
     Repo.all(Task)
   end
 
+  def list_tasks(%{"completed" => completed}) do
+    query = from t in Task,
+      where: t.completed == ^completed
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single task.
 
@@ -36,6 +42,13 @@ defmodule TodoApp.Todos do
 
   """
   def get_task!(id), do: Repo.get!(Task, id)
+
+  def get_last_task() do
+    query = from t in Task,
+      where: t.inserted_at in subquery(from t2 in Task, select: max(t2.inserted_at))
+
+    Repo.one(query)
+  end
 
   @doc """
   Creates a task.
@@ -100,5 +113,14 @@ defmodule TodoApp.Todos do
   """
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
+  end
+
+  def get_stats() do
+    %{
+      "totalTasks" => list_tasks() |> length(),
+      "completedTasks" => list_tasks(%{"completed" => true}) |> length(),
+      "activeTasks" => list_tasks(%{"completed" => false}) |> length(),
+      "lastUpdatedTask" => get_last_task() |> Map.get(:updated_at)
+    }
   end
 end

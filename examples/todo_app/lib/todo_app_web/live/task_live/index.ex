@@ -22,6 +22,8 @@ defmodule TodoAppWeb.TaskLive.Index do
       :ok,
       socket
       |> assign(:add_task_text, nil)
+      |> assign(:stats, stats())
+      |> assign(:current_date, current_date())
       |> assign(:todo_mcp, TodoAppMCP.Clients.TodoAppMCP)
       |> stream(:tasks, tasks)
     }
@@ -80,9 +82,18 @@ defmodule TodoAppWeb.TaskLive.Index do
 
       {:ok, task} = Todos.create_task(%{"completed" => false, "text" => text, "priority" => "medium", "due_date" => due_date, "notes" => ""})
       tsk = %{id: task.id, task: task}
-      {:noreply, socket |> assign(:add_task_text, nil) |> stream_insert(:tasks, tsk)}
+      {:noreply,
+        socket
+          |> assign(:stats, stats())
+          |> assign(:current_date, current_date())
+          |> assign(:add_task_text, nil)
+          |> stream_insert(:tasks, tsk)}
     else
-      {:noreply, socket}
+      {:noreply,
+        socket
+          |> assign(:stats, stats())
+          |> assign(:current_date, current_date())
+      }
     end
   end
 
@@ -97,7 +108,11 @@ defmodule TodoAppWeb.TaskLive.Index do
       end)
     task = Enum.at(updated_tasks, 0)
 
-    {:noreply, stream_insert(socket, :tasks, task)}
+    {:noreply,
+      socket
+        |> assign(:stats, stats())
+        |> assign(:current_date, current_date())
+        |> stream_insert(:tasks, task)}
   end
 
   @impl true
@@ -106,7 +121,11 @@ defmodule TodoAppWeb.TaskLive.Index do
     {:ok, _} = Todos.delete_task(task)
     tsk = %{id: task.id, task: task}
 
-    {:noreply, stream_delete(socket, :tasks, tsk)}
+    {:noreply,
+      socket
+        |> assign(:stats, stats())
+        |> assign(:current_date, current_date())
+        |> stream_delete(:tasks, tsk)}
   end
 
   @impl true
@@ -121,17 +140,33 @@ defmodule TodoAppWeb.TaskLive.Index do
         if not Map.get(res, "isError") do
           case Map.get(res, "tool") do
             "add_task" ->
-              {:noreply, stream_insert(socket, :tasks, maybe_extract_item(res))}
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_insert(:tasks, maybe_extract_item(res))}
 
             "complete_task" ->
-              {:noreply, stream_insert(socket, :tasks, maybe_extract_item(res))}
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_insert(:tasks, maybe_extract_item(res))}
 
             "remove_task" ->
-              {:noreply, stream_delete(socket, :tasks, maybe_extract_item(res))}
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_delete(:tasks, maybe_extract_item(res))}
 
           end
         else
-          {:noreply, socket}
+          {:noreply,
+            socket
+              |> assign(:stats, stats())
+              |> assign(:current_date, current_date())
+          }
         end
 
     end
@@ -195,4 +230,15 @@ defmodule TodoAppWeb.TaskLive.Index do
   defp notes_tooltip(notes) do
     if not is_nil(notes) and notes != "", do: "tooltip hover:tooltip-open tooltip-right tooltip-secondary", else: "hidden"
   end
+
+  defp stats() do
+    Todos.get_stats() |> Jason.encode!()
+  end
+
+  defp current_date() do
+    today = DateTime.utc_now()
+    today_date = DateTime.to_date(today)
+    Date.to_string(today_date)
+  end
+
 end
