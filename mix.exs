@@ -8,7 +8,8 @@ defmodule ExVoix.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       package: package(),
-      deps: deps()
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -22,6 +23,7 @@ defmodule ExVoix.MixProject do
 
   defp package do
     [
+      description: "ExVOIX VOIX Framework for Elixir.",
       files: ["lib", "mix.exs", "README.md", "LICENSE"],
       maintainers: ["Iskandar Rizki"],
       licenses: ["MIT"],
