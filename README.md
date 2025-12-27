@@ -21,17 +21,17 @@ VOIX introduces two main HTML tags:
 <context>: Used to explicitly provide relevant state or information to the agent, such as product details or current user status.
 ```
 
-** Improved Performance: **
+**Improved Performance:**
 By eliminating the need for complex visual inference or repeated verification loops, VOIX enables immediate feedback and 
 significantly reduces latency for AI agent tasks, making interactions feel instantaneous.
 
-** Privacy and Security: **
+**Privacy and Security:**
 The framework enhances user privacy by separating conversational AI interactions from the website itself, shifting control to the developer to specify exactly what information is shared with agents.
 
-** Developer-Friendly: ** 
+**Developer-Friendly:** 
 Built on familiar web patterns and standard JavaScript event listeners, developers in an initial hackathon study found the framework easy to learn and use effectively.
 
-** Accessibility: **
+**Accessibility:**
 By providing a clear, non-visual description of website actions, the framework can also streamline web browsing and make it more accessible for users with visual impairments. 
 
 ## Status and Adoption
