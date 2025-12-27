@@ -144,9 +144,9 @@ end
   ```
 
 ## TODO
-- [] FastMCP integration
-- [] MCP-UI integration
-- [] AI browser support
+- [ ] FastMCP integration
+- [ ] MCP-UI integration
+- [ ] AI browser support
 
 ## License
 Released under the MIT License.
