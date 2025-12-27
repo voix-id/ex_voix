@@ -93,6 +93,52 @@ end
     ...
 
   ```
+- Add event handler when voix tool call is triggered, ex: todo_app/todo_app_web/live/task_live/index.ex
+  ```elixir
+  ...
+  @impl true
+  def handle_event("call", params, socket) do
+    case Tool.call(params) do
+      nil ->
+        {:noreply, socket}
+
+      {:ok, res} ->
+        if not Map.get(res, "isError") do
+          case Map.get(res, "tool") do
+            "add_task" ->
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_insert(:tasks, maybe_extract_item(res))}
+
+            "complete_task" ->
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_insert(:tasks, maybe_extract_item(res))}
+
+            "remove_task" ->
+              {:noreply,
+                socket
+                  |> assign(:stats, stats())
+                  |> assign(:current_date, current_date())
+                  |> stream_delete(:tasks, maybe_extract_item(res))}
+
+          end
+        else
+          {:noreply,
+            socket
+              |> assign(:stats, stats())
+              |> assign(:current_date, current_date())
+          }
+        end
+
+    end
+  end
+  ...
+  ```
 
 ## License
 Released under the MIT License.
