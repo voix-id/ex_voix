@@ -157,7 +157,7 @@ end
   ```
 
 ## TODO
-- [ ] FastMCP integration
+- [V] FastMCP integration (See [here for example](https://github.com/onprem-vip/todo_mcp_ui))
 - [ ] MCP-UI integration
 
 ## License
