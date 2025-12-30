@@ -46,14 +46,14 @@ defmodule ExVoix.ModelContext.Registry do
         if exact_name do
           Enum.filter(tools |> Map.keys(), fn t -> t == name end)
         else
-          Enum.filter(tools |> Map.keys(), fn t -> String.contains?(name, t) end)
+          [Enum.filter(tools |> Map.keys(), fn t -> String.contains?(name, t) end) |> Enum.max_by(fn t -> String.jaro_distance(name, t) * 100 end)]
         end
 
       true ->
         if exact_name do
           Enum.filter(tools, fn t -> not is_nil(Map.get(t, "name")) and Map.get(t, "name") == name end)
         else
-          Enum.filter(tools, fn t -> not is_nil(Map.get(t, "name")) and String.contains?(name, Map.get(t, "name")) end)
+          [Enum.filter(tools, fn t -> not is_nil(Map.get(t, "name")) and String.contains?(name, Map.get(t, "name")) end) |> Enum.max_by(fn t -> String.jaro_distance(name, Map.get(t, "name")) * 100 end)]
         end
 
     end

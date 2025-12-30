@@ -3,6 +3,7 @@ defmodule TodoAppWeb.TaskLive.Index do
 
   alias TodoApp.Todos
   alias TodoApp.Todos.Task
+  alias TodoAppWeb.Utils.LvJs
   alias ExVoix.ModelContext.Tool
 
   @impl true
@@ -24,6 +25,7 @@ defmodule TodoAppWeb.TaskLive.Index do
       |> assign(:add_task_text, nil)
       |> assign(:stats, stats())
       |> assign(:current_date, current_date())
+      |> assign(:code, "")
       |> assign(:todo_mcp, TodoAppMCP.Clients.TodoAppMCP)
       |> stream(:tasks, tasks)
     }
@@ -160,6 +162,27 @@ defmodule TodoAppWeb.TaskLive.Index do
                   |> assign(:current_date, current_date())
                   |> stream_delete(:tasks, maybe_extract_item(res))}
 
+            "show_update_task_form" ->
+              IO.inspect(Map.get(res, "text"))
+              socket =
+                socket |> assign(:code, LvJs.eval(Map.get(res, "text")))
+
+              payload = %{to: "#task_script", attr: "data-js-command"}
+              {:noreply,
+                socket
+                |> push_event("js-exec", payload)
+              }
+
+            "close_update_task_form" ->
+              IO.inspect(Map.get(res, "text"))
+              socket =
+                socket |> assign(:code, LvJs.eval(Map.get(res, "text")))
+
+              payload = %{to: "#update_task_script", attr: "data-js-command"}
+              {:noreply,
+                socket
+                |> push_event("js-exec", payload)
+              }
           end
         else
           {:noreply,

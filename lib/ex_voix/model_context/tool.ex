@@ -44,6 +44,7 @@ defmodule ExVoix.ModelContext.Tool do
                   if is_map(decoded) and Map.has_key?(decoded, "isError"),
                     do: decoded,
                     else: Map.put(decoded, "isError", false)
+                  |> Map.put("tool", tool_name)
               end
             }
 
@@ -60,6 +61,7 @@ defmodule ExVoix.ModelContext.Tool do
                   if is_map(decoded) and Map.has_key?(decoded, "isError"),
                     do: decoded,
                     else: Map.put(decoded, "isError", false)
+                  |> Map.put("tool", tool_name)
               end
             }
         end
@@ -78,6 +80,7 @@ defmodule ExVoix.ModelContext.Tool do
                   if is_map(decoded) and Map.has_key?(decoded, "isError"),
                     do: decoded,
                     else: Map.put(decoded, "isError", true)
+                  |> Map.put("tool", tool_name)
               end
             }
 
@@ -91,6 +94,7 @@ defmodule ExVoix.ModelContext.Tool do
                   if is_map(decoded) and Map.has_key?(decoded, "isError"),
                     do: decoded,
                     else: Map.put(decoded, "isError", true)
+                  |> Map.put("tool", tool_name)
               end
             }
 
