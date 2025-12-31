@@ -4,15 +4,18 @@ defmodule ExVoix.ModelContext.Registry do
     pids = Process.list()
 
     mcp_names =
-      Enum.filter(pids, fn pid ->
-        res =
-          case Process.info(pid, :dictionary) do
-            {:dictionary, res} -> res
-            {:error, _} -> []
-          end
+      Enum.filter(pids, fn
+        nil -> []
 
-        not is_nil(Keyword.get(res, :"\$logger_metadata\$")) and
-          not is_nil(Keyword.get(res, :"\$logger_metadata\$") |> Map.get(:mcp_client_name))
+        pid ->
+          res =
+            case Process.info(pid, :dictionary) do
+              {:dictionary, res} -> res
+              {:error, _} -> []
+            end
+
+          not is_nil(Keyword.get(res, :"\$logger_metadata\$")) and
+            not is_nil(Keyword.get(res, :"\$logger_metadata\$") |> Map.get(:mcp_client_name))
       end)
       |> Enum.map(fn pid ->
         {:registered_name, res} = Process.info(pid, :registered_name)

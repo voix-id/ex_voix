@@ -7,23 +7,26 @@ defmodule ExVoix.ModelContext.Tool do
     detail = Map.get(event, "detail")
 
     mcps = Registry.load_mcps()
-    mcp =
-      Enum.filter(mcps, fn mcp -> length(Registry.load_tool(mcp, target_name, false)) > 0 end)
-      |> Enum.at(0)
-    if not is_nil(mcp) do
-      [tool_info] = Registry.load_tool(mcp, target_name, false)
-      # TODO: put id from target_name to detail
-      has_item_id = Map.get(tool_info, "title") |> String.replace(" ", "") |> String.contains?("<%=item_id%>")
-      detail =
-        if has_item_id do
-          name_prefix = Map.get(tool_info, "title") |> String.replace(" ", "") |> String.replace("<%=item_id%>", "")
-          item_id = String.replace(target_name, name_prefix, "")
-          Map.put(detail, "id", String.to_integer(item_id))
-        else
-          detail
-        end
-      IO.inspect(detail, label: "detail in call event")
-      call_tool_response(mcp, Map.get(tool_info, "name"), detail)
+    if mcps |> length() > 0 do
+      mcp =
+        Enum.filter(mcps, fn mcp -> length(Registry.load_tool(mcp, target_name, false)) > 0 end)
+        |> Enum.at(0)
+      if not is_nil(mcp) do
+        [tool_info] = Registry.load_tool(mcp, target_name, false)
+        # TODO: put id from target_name to detail
+        has_item_id = Map.get(tool_info, "title") |> String.replace(" ", "") |> String.contains?("<%=item_id%>")
+        detail =
+          if has_item_id do
+            name_prefix = Map.get(tool_info, "title") |> String.replace(" ", "") |> String.replace("<%=item_id%>", "")
+            item_id = String.replace(target_name, name_prefix, "")
+            Map.put(detail, "id", String.to_integer(item_id))
+          else
+            detail
+          end
+        IO.inspect(detail, label: "detail in call event")
+        call_tool_response(mcp, Map.get(tool_info, "name"), detail)
+
+      end
     end
   end
 
