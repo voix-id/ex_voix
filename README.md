@@ -75,6 +75,15 @@ end
       unquote(html_helpers())
     end
   end
+
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+      import ExVoix.Html.Components # -> Add this line
+
+      unquote(html_helpers())
+    end
+  end
   ...
   ```
 - Add voix_event_handler LiveView Hook, 
