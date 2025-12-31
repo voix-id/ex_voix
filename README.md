@@ -29,8 +29,11 @@ VOIX introduces two main HTML tags:
 MCP and MCP-UI:
 ```
 Model Context Protocol (MCP): The underlying system connecting AI agents to external tools and data, for this setup, the mcp will be running in the server side, bring more security to the user and the system.
+
 MCP-UI: An extension to MCP, providing a way to send interactive UI elements.
+
 UIResource: The core object defining the UI content (HTML, URL, Remote DOM) to be delivered and displayed.
+
 Phoenix LiveView SDK: How the UIResource will be delivered and displayed to the users by Phoenix LiveView.
 ```
 
