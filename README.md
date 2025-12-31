@@ -124,7 +124,7 @@ end
   ```
 - Add <.tool />, <.context /> and <.jsexec /> element in heex template, ex: todo_app/lib/todo_app_web/live/task_live/index.html.heex
   ```html
-<div>
+    <div>
     ...
                 <.tool mcp={@todo_mcp} name="complete_task" item_id={id} item_label={task.text} />
                 <.tool mcp={@todo_mcp} name="remove_task" item_id={id} item_label={task.text} />
@@ -136,9 +136,8 @@ end
     <.context name="current_date" content={@current_date} />
 
     </form>
-
-<.jsexec id="task_script" js_code={@code} />
-</div>
+    </div>
+    <.jsexec id="task_script" js_code={@code} />
     ...
 
   ```
