@@ -32,7 +32,6 @@ defmodule TodoAppWeb.TaskLive.FormComponent do
       </.simple_form>
       <.tool mcp={@todo_mcp} name="close_update_task_form" />
 
-
       <.jsexec id="update_task_script" js_code={@code} />
     </div>
     """

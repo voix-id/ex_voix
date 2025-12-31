@@ -21,7 +21,7 @@ defmodule TodoAppMCP.Components.CompleteTask do
 
   @impl true
   def description() do
-    "Mark task '<%= item_label %>' as complete"
+    "Mark task '<%= item_label %>' as complete or incomplete"
   end
 
   @impl true
