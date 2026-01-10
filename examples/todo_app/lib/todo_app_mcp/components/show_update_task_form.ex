@@ -9,7 +9,7 @@ defmodule TodoAppMCP.Components.ShowUpdateTaskForm do
   alias Anubis.Server.Response
   alias ExVoix.ModelContext.UIResource
   alias ExVoix.ModelContext.UIResource.EncodingType
-  alias ExVoix.ModelContext.UI.DomPatchingPayload
+  alias ExVoix.ModelContext.UI.CommandPayload
 
   schema do
     field :id, :integer, required: true
@@ -32,7 +32,7 @@ defmodule TodoAppMCP.Components.ShowUpdateTaskForm do
     interactive_js = """
     JS.patch("/tasks/#{id}/edit")
     """
-    lvjs_payload = DomPatchingPayload.new(%{
+    lvjs_payload = CommandPayload.new(%{
       framework: "liveviewjs",
       script: interactive_js |> String.trim()
     })

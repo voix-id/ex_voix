@@ -1,4 +1,4 @@
-defmodule TodoAppMCP.Components.CloseUpdateTaskForm do
+defmodule TodoAppMCP.Components.CloseAnyForm do
   @moduledoc """
   Show update task form
   """
@@ -9,7 +9,7 @@ defmodule TodoAppMCP.Components.CloseUpdateTaskForm do
   alias Anubis.Server.Response
   alias ExVoix.ModelContext.UIResource
   alias ExVoix.ModelContext.UIResource.EncodingType
-  alias ExVoix.ModelContext.UI.DomPatchingPayload
+  alias ExVoix.ModelContext.UI.CommandPayload
 
   schema do
     #field :id, :integer, required: true
@@ -17,12 +17,12 @@ defmodule TodoAppMCP.Components.CloseUpdateTaskForm do
 
   @impl true
   def title() do
-    "close_update_task_form"
+    "close_any_form"
   end
 
   @impl true
   def description() do
-    "Close update task form"
+    "Close any form window"
   end
 
   @impl true
@@ -30,14 +30,14 @@ defmodule TodoAppMCP.Components.CloseUpdateTaskForm do
     interactive_js = """
     JS.patch("/tasks")
     """
-    lvjs_payload = DomPatchingPayload.new(%{
+    lvjs_payload = CommandPayload.new(%{
       framework: "liveviewjs",
       script: interactive_js |> String.trim()
     })
 
     resource = UIResource.new(
       %{
-        uri: "ui://todo_app/close-task-form",
+        uri: "ui://todo_app/close-any-form",
         content: lvjs_payload,
         encoding: EncodingType.Text,
         # ui_metadata: %{},

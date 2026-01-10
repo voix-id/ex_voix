@@ -26,6 +26,7 @@ defmodule TodoAppWeb.TaskLive.Index do
       |> assign(:stats, stats())
       |> assign(:current_date, current_date())
       |> assign(:code, nil)
+      |> assign(:remote_code, nil)
       |> assign(:todo_mcp, TodoAppMCP.Clients.TodoAppMCP)
       |> stream(:tasks, tasks)
     }
@@ -40,6 +41,11 @@ defmodule TodoAppWeb.TaskLive.Index do
       |> assign(uri: URI.parse(url))
 
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :ui_window, _params) do
+    socket
+    |> assign(:page_title, "Todo App · UI Window")
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -202,7 +208,7 @@ defmodule TodoAppWeb.TaskLive.Index do
 
   defp executeRemoteCode(socket, res) do
     case Map.get(res, "mimeType") do
-      "application/vnd.ex-voix.dom-patching+javascript; framework=liveviewjs" ->
+      "application/vnd.ex-voix.command+javascript; framework=liveviewjs" ->
         socket =
           socket |> assign(:code, LvJs.eval(Map.get(res, "text")))
 
@@ -211,7 +217,28 @@ defmodule TodoAppWeb.TaskLive.Index do
 
       "application/vnd.mcp-ui.remote-dom+javascript; framework=webcomponents" ->
         # TODO:
-        socket
+        # IO.inspect(Map.get(res, "text"), label: "script code")
+        socket =
+          socket
+            |> assign(:remote_code, Map.get(res, "text"))
+        payload = %{to: "#remote-code-renderer", resource: res}
+        socket |> push_event("code-render", payload)
+
+      "text/html" ->
+        # TODO:
+        socket =
+          socket
+            |> assign(:remote_code, Map.get(res, "text"))
+        payload = %{to: "#remote-code-renderer", resource: res}
+        socket |> push_event("code-render", payload)
+
+      "text/uri-list" ->
+        # TODO:
+        socket =
+          socket
+            |> assign(:remote_code, Map.get(res, "text"))
+        payload = %{to: "#remote-code-renderer", resource: res}
+        socket |> push_event("code-render", payload)
 
       _ ->
         socket

@@ -21,6 +21,7 @@
 // Feel free to adjust this configuration however you need.
 {
   "compilerOptions": {
+    "lib": [ "ES2015", "dom" ],
     "baseUrl": ".",
     "paths": {
       "*": ["../deps/*"]

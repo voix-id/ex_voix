@@ -1,11 +1,11 @@
-defmodule ExVoix.ModelContext.UI.DomPatchingPayload do
+defmodule ExVoix.ModelContext.UI.CommandPayload do
 
   @type t :: %__MODULE__{
     type: String.t(),
     framework: String.t() | nil,
     script: String.t() | nil
   }
-  defstruct type: "domPatching",
+  defstruct type: "command",
             framework: nil,
             script: nil
 

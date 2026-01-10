@@ -8,7 +8,8 @@ defmodule TodoAppMCP.Server do
   component(TodoAppMCP.Components.CompleteTask)
   component(TodoAppMCP.Components.RemoveTask)
   component(TodoAppMCP.Components.ShowUpdateTaskForm)
-  component(TodoAppMCP.Components.CloseUpdateTaskForm)
+  component(TodoAppMCP.Components.ShowStatsWindow)
+  component(TodoAppMCP.Components.CloseAnyForm)
 
   # def init(_client_info, frame) do
   #   # TODO:

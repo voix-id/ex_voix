@@ -2,14 +2,14 @@ defmodule ExVoix.ModelContext.UIResource do
   use EnumType
 
   alias Anubis.Server.Response
-  alias ExVoix.ModelContext.UI.{RawHtmlPayload, ExternalUrlPayload, RemoteDomPayload, DomPatchingPayload}
+  alias ExVoix.ModelContext.UI.{RawHtmlPayload, ExternalUrlPayload, RemoteDomPayload, CommandPayload}
 
   defenum MimeType do
     value Html, "text/html"
     value UriList, "text/uri-list"
     value ReactRemoteDom, "application/vnd.mcp-ui.remote-dom+javascript; framework=react"
     value WebComponentsRemoteDom, "application/vnd.mcp-ui.remote-dom+javascript; framework=webcomponents"
-    value LiveviewJSDomPatching, "application/vnd.ex-voix.dom-patching+javascript; framework=liveviewjs"
+    value LiveviewJSCommand, "application/vnd.ex-voix.command+javascript; framework=liveviewjs"
   end
 
   defenum UIActionType do
@@ -53,10 +53,10 @@ defmodule ExVoix.ModelContext.UIResource do
             payload.framework == "react" -> ExVoix.ModelContext.UIResource.MimeType.ReactRemoteDom
             payload.framework == "webcomponents" -> ExVoix.ModelContext.UIResource.MimeType.WebComponentsRemoteDom
           end
-        %DomPatchingPayload{} = payload ->
+        %CommandPayload{} = payload ->
           cond do
-            payload.framework == "liveviewjs" -> ExVoix.ModelContext.UIResource.MimeType.LiveviewJSDomPatching
-            true -> ExVoix.ModelContext.UIResource.MimeType.LiveviewJSDomPatching
+            payload.framework == "liveviewjs" -> ExVoix.ModelContext.UIResource.MimeType.LiveviewJSCommand
+            true -> ExVoix.ModelContext.UIResource.MimeType.LiveviewJSCommand
           end
       end
 
@@ -67,7 +67,7 @@ defmodule ExVoix.ModelContext.UIResource do
         %ExternalUrlPayload{} = payload when not is_nil(payload.target_url) ->
           %{target_url: payload.target_url, script_code: payload.script_code}
         %RemoteDomPayload{} = payload -> payload.script
-        %DomPatchingPayload{} = payload -> payload.script
+        %CommandPayload{} = payload -> payload.script
       end
 
     case ui_resource.encoding.value() do
