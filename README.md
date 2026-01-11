@@ -259,7 +259,7 @@ end
     defineWebComponents();
     ...
   ```
-- Add <ui-resource-renderer /> element in heex template, you can place the element anywhere in the template, place it where you want to render the content. Ex: todo_app/lib/todo_app_web/live/task_live/index.html.heex
+- Add `<ui-resource-renderer />` element in heex template, you can place the element anywhere in the template, place it where you want to render the content. Ex: todo_app/lib/todo_app_web/live/task_live/index.html.heex
   ```html
   ...
     <.modal
