@@ -29,5 +29,5 @@
     "allowJs": true,
     "noEmit": true
   },
-  "include": ["js/**/*", "../../../lib/ex_voix/js/voix_event_handler.js",]
+  "include": ["js/**/*", "../../../lib/ex_voix/js/voix_event_handler.js", "vendor/**/*"]
 }

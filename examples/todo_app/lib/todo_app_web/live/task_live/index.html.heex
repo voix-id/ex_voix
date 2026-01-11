@@ -100,7 +100,7 @@
 <.lvjsexec id="executable_script" js_code={@code} />
 
 <.modal
-    :if={@remote_code}
+    :if={@live_action in [:stats]}
     id="popup-window"
     show
     on_cancel={JS.patch(~p"/tasks")}
@@ -108,17 +108,31 @@
 <ui-resource-renderer id="remote-code-renderer" phx-hook='.CodeRenderer'></ui-resource-renderer>
 </.modal>
 <script :type={Phoenix.LiveView.ColocatedHook} name=".CodeRenderer">
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
 export default {
     mounted() {
         console.log("CodeRenderer mounted")
         this.handleEvent("code-render", ({ to, resource }) => {
             // Find the target element(s) and execute the JS command stored in an attribute
             document.querySelectorAll(to).forEach(el => {
-                el.resource = resource
+                if (resource) {
+                    el.resource = resource
+                    // TODO: complete resource component props
+                    el.remoteDomProps = {library: basicComponentLibrary, remoteElements: remoteElements}
+                    el.htmlProps = {}
 
-                el.addEventListener('onUIAction', (event) => {
-                    console.log('Action received:', event.detail);
-                });
+                    el.addEventListener('onUIAction', (event) => {
+                        console.log('Action received:', event.detail);
+                        document.querySelectorAll('ui-text').forEach(ui_text => {
+                            let txt = ui_text.getAttribute('content');
+                            ui_text.setAttribute('content', decodeHtml(txt));
+                        })
+                    });
+                }
             });
         });
     }

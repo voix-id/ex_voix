@@ -34,7 +34,8 @@ class UIText extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     const p = document.createElement('p');
-    p.textContent = this.getAttribute('content');
+    // p.textContent = this.getAttribute('content');
+    p.innerHTML = this.getAttribute('content');
     this.shadowRoot?.appendChild(p);
   }
 
@@ -42,7 +43,8 @@ class UIText extends HTMLElement {
     if (name === 'content') {
       const p = this.shadowRoot?.querySelector('p');
       if (p) {
-        p.textContent = newValue;
+        // p.textContent = newValue;
+        p.innerHTML = newValue;
       }
     }
   }

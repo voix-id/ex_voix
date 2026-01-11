@@ -26,8 +26,16 @@ import {hooks as colocatedHooks} from "phoenix-colocated/todo_app"
 import topbar from "../vendor/topbar"
 import VoixEventHandler from "../../../../lib/ex_voix/js/voix_event_handler"
 
-import "../../../../lib/ex_voix/js/ui-resource-renderer.wc"
-import { defineWebComponents } from '../../../../lib/ex_voix/js/webcomponents';
+import '@mcp-ui/client/ui-resource-renderer.wc.js';
+import { 
+  basicComponentLibrary,
+  remoteCardDefinition, 
+  remoteButtonDefinition, 
+  remoteTextDefinition, 
+  remoteStackDefinition, 
+  remoteImageDefinition,
+} from '@mcp-ui/client';
+import { defineWebComponents } from '../../../../lib/ex_voix/js/mcp-ui-client/webcomponents';
 
 let Hooks = {};
 Hooks.VoixEventHandler = VoixEventHandler;
@@ -44,6 +52,14 @@ topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 defineWebComponents();
+window.basicComponentLibrary = basicComponentLibrary
+window.remoteElements = [
+  remoteCardDefinition, 
+  remoteButtonDefinition, 
+  remoteTextDefinition, 
+  remoteStackDefinition, 
+  remoteImageDefinition,
+]
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

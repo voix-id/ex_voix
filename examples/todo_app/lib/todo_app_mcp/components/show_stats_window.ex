@@ -12,6 +12,8 @@ defmodule TodoAppMCP.Components.ShowStatsWindow do
   alias ExVoix.ModelContext.UI.RemoteDomPayload
   alias TodoApp.Todos
 
+  import Phoenix.HTML
+
   schema do
     # field :id, :integer, required: true
   end
@@ -29,8 +31,10 @@ defmodule TodoAppMCP.Components.ShowStatsWindow do
   @impl true
   def execute(_params, frame) do
     stats = Todos.get_stats()
-    stats_text = Enum.map_join(stats, "<br />", fn {k,v} -> "#{k}: #{v}" end)
-    # IO.inspect(stats_text)
+    {:safe, stats_text} =
+      Enum.map_join(stats, "</tr>", fn {k,v} -> "<tr><td align='left'>#{k}</td><td>#{v}</td>" end)
+      |> html_escape()
+    stats_text = "<table>#{stats_text}</table>"
 
     js_code =
     """
@@ -47,15 +51,15 @@ defmodule TodoAppMCP.Components.ShowStatsWindow do
       title.setAttribute('content', 'TodoApp Statistics');
 
       // Create the toggle button
-      const toggleButton = document.createElement('ui-button');
-      toggleButton.setAttribute('label', '🌙 Switch to Dark Mode');
+      // const toggleButton = document.createElement('ui-button');
+      // toggleButton.setAttribute('label', '🌙 Switch to Dark Mode');
 
       // Create the stats text
       const stats = document.createElement('ui-text');
       stats.setAttribute('content', '#{stats_text}');
 
       // Add the toggle functionality
-      toggleButton.addEventListener('press', () => {
+      /*toggleButton.addEventListener('press', () => {
         isDarkMode = !isDarkMode;
 
         if (isDarkMode) {
@@ -67,12 +71,12 @@ defmodule TodoAppMCP.Components.ShowStatsWindow do
         }
 
         console.log('Logo toggled to:', isDarkMode ? 'dark' : 'light', 'mode');
-      });
+      });*/
 
       // Assemble the UI
       stack.appendChild(title);
       stack.appendChild(stats);
-      stack.appendChild(toggleButton);
+      // stack.appendChild(toggleButton);
       root.appendChild(stack);
     """
 

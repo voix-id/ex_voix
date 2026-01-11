@@ -26,7 +26,7 @@ defmodule TodoAppWeb.TaskLive.Index do
       |> assign(:stats, stats())
       |> assign(:current_date, current_date())
       |> assign(:code, nil)
-      |> assign(:remote_code, nil)
+      |> assign(:resource, nil)
       |> assign(:todo_mcp, TodoAppMCP.Clients.TodoAppMCP)
       |> stream(:tasks, tasks)
     }
@@ -43,9 +43,14 @@ defmodule TodoAppWeb.TaskLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :ui_window, _params) do
+  defp apply_action(socket, :stats, _params) do
+    task_changeset = task_changeset_from(%{})
+    payload = %{to: "#remote-code-renderer", resource: socket.assigns.resource}
     socket
-    |> assign(:page_title, "Todo App · UI Window")
+    |> assign(:page_title, "Todo App · Stats")
+    |> assign(:task, %Task{})
+    |> assign(:form, to_form(task_changeset))
+    |> push_event("code-render", payload)
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -178,6 +183,11 @@ defmodule TodoAppWeb.TaskLive.Index do
             |> assign(:current_date, current_date())
             |> stream_delete(:tasks, maybe_extract_item(res))
 
+        "show_stats_window" ->
+          socket
+            |> assign(:resource, res)
+            |> push_patch(to: "/tasks/stats")
+
         _ ->
           socket |> executeRemoteCode(res)
 
@@ -218,25 +228,25 @@ defmodule TodoAppWeb.TaskLive.Index do
       "application/vnd.mcp-ui.remote-dom+javascript; framework=webcomponents" ->
         # TODO:
         # IO.inspect(Map.get(res, "text"), label: "script code")
-        socket =
-          socket
-            |> assign(:remote_code, Map.get(res, "text"))
+        # socket =
+        #   socket
+        #     |> assign(:remote_code, Map.get(res, "text"))
         payload = %{to: "#remote-code-renderer", resource: res}
         socket |> push_event("code-render", payload)
 
       "text/html" ->
         # TODO:
-        socket =
-          socket
-            |> assign(:remote_code, Map.get(res, "text"))
+        # socket =
+        #   socket
+        #     |> assign(:remote_code, Map.get(res, "text"))
         payload = %{to: "#remote-code-renderer", resource: res}
         socket |> push_event("code-render", payload)
 
       "text/uri-list" ->
         # TODO:
-        socket =
-          socket
-            |> assign(:remote_code, Map.get(res, "text"))
+        # socket =
+        #   socket
+        #     |> assign(:remote_code, Map.get(res, "text"))
         payload = %{to: "#remote-code-renderer", resource: res}
         socket |> push_event("code-render", payload)
 
