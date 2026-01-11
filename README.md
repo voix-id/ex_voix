@@ -203,6 +203,10 @@ end
     ...
 
   ```
+- Start the phoenix server
+  ```bash
+  > mix phx.server
+  ```
 
 ## mcp-ui client support for rendering raw-html, external-url or remote-dom from mcp-ui server (optional):
 - Install mcp-ui client with npm or bun in assets directory for rendering mcp-ui in browser
@@ -269,6 +273,7 @@ end
     </.modal>
   ...
   ```
+- Restart the phoenix server
 
 ## More Examples
 - FastMCP and MCP-UI integration ([here](https://github.com/onprem-vip/todo_mcp_ui))
