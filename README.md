@@ -84,7 +84,8 @@ end
 ## Integration Steps for Phoenix.LiveView Project (Required)
 - Create Elixir Phoenix framework Project
 - Add {:ex_voix, "~> x.x.x"} to your mix.exs, fill x.x.x with ex_voix latest version
-- Add the client for your MCP Server by adding MCP Client inside your project, you can see how to do it from examples/todo_app in todo_app_mcp/clients/todo_app_mcp.ex file and register the file in application.ex or
+- Build your own MCP Server, for elixir you can use [Anubis MCP](https://hexdocs.pm/anubis_mcp/readme.html), for python you can use [FastMCP](https://github.com/jlowin/fastmcp). You can see the example for elixir MCP Server in examples/todo_app/lib/todo_app_mcp or for python in [here](https://github.com/onprem-vip/todo_mcp_ui), find it in `mcps` directory.
+- Add the client for your MCP Server by adding MCP Client inside your project, you can see how to add it from examples/todo_app in todo_app_mcp/clients/todo_app_mcp.ex file and register the file in application.ex or
   see the [Anubis MCP Client documentation](https://hexdocs.pm/anubis_mcp/building-a-client.html)
 - Add below line in file ex: todo_app/lib/todo_app_web.ex
   ```elixir
