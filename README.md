@@ -1,4 +1,4 @@
-[![0.3.6](img.shields.io)](hex.pm)
+[![0.3.6](https://img.shields.io/hexpm/v/ex_voix.svg)](https://hex.pm/packages/ex_voix)
 
 # ExVoix
 
