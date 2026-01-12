@@ -224,7 +224,7 @@ end
     </form>
     </div>
 
-    <.ui_resource_renderer id="executable_script" resource={@resource} />
+    <.ui_resource_renderer id="executable-script" resource={@resource} />
     ...
 
   ```
