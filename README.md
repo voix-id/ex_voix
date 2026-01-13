@@ -228,7 +228,7 @@ end
     ...
 
   ```
-  `<.ui_resource_renderer />` element is adding the ability to execute [Liveview JS Command](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html), the JS Command will be sent from MCP Server, this is part of the MCP-UI payload, added by ExVoix project.
+  `<.ui_resource_renderer />` element is adding the ability to execute [Liveview JS Command](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html), the JS Command will be sent from MCP Server, this is one of the new MCP-UI payload, added by ExVoix project.
 - Start the phoenix server
   ```bash
   > mix phx.server
