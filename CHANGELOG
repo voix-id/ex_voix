@@ -5,3 +5,6 @@
     * update examples, implement show_stats_window
     * update examples, simplify execute_remote_code
     * update README.md
+- 2026-01-13 (ver. 0.3.6)
+    * fix a bug related to window.addEventListener("call", eventHandler) being called twice
+    * update README.md
