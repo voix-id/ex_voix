@@ -37,6 +37,8 @@ import {
 } from '@mcp-ui/client';
 import { defineWebComponents } from '../../../../lib/ex_voix/js/mcp-ui-client/webcomponents';
 
+VoixEventHandler.init();
+
 let Hooks = {};
 Hooks.VoixEventHandler = VoixEventHandler;
 

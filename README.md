@@ -174,6 +174,8 @@ end
     import topbar from "../vendor/topbar"
     import VoixEventHandler from "../../deps/ex_voix/lib/ex_voix/js/voix_event_handler"
 
+    VoixEventHandler.init();    
+    
     // declare Hooks
     let Hooks = {};
     Hooks.VoixEventHandler = VoixEventHandler;
@@ -261,6 +263,8 @@ end
     } from '@mcp-ui/client';
     // you can change below component definition with your own design
     import { defineWebComponents } from '../../deps/ex_voix/lib/ex_voix/js/mcp-ui-client/webcomponents';
+
+    VoixEventHandler.init();
 
     // declare Hooks
     let Hooks = {};
