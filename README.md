@@ -1,4 +1,4 @@
-[![0.3.6](https://img.shields.io/hexpm/v/ex_voix.svg)](https://hex.pm/packages/ex_voix)
+[![0.3.7](https://img.shields.io/hexpm/v/ex_voix.svg)](https://hex.pm/packages/ex_voix)
 
 # ExVoix
 
@@ -174,7 +174,7 @@ end
     import topbar from "../vendor/topbar"
     import VoixEventHandler from "../../deps/ex_voix/lib/ex_voix/js/voix_event_handler"
 
-    VoixEventHandler.init();    
+    VoixEventHandler.init(); // <- mandatory initial function
     
     // declare Hooks
     let Hooks = {};
@@ -264,7 +264,7 @@ end
     // you can change below component definition with your own design
     import { defineWebComponents } from '../../deps/ex_voix/lib/ex_voix/js/mcp-ui-client/webcomponents';
 
-    VoixEventHandler.init();
+    VoixEventHandler.init(); // <- mandatory initial function
 
     // declare Hooks
     let Hooks = {};
