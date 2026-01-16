@@ -12,3 +12,7 @@
     * refactor and rename addEventHandler to addCallEventHandler
     * fix a bug in declare global voixHandler
     * update README.md
+- 2026-01-16 (ver. 0.3.9)
+    * replace VoixEventHandler init function params with map
+    * fix a bug related to name matching in tool registry
+    * update examples, update field values by mcp call
